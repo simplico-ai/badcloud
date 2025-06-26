@@ -27,3 +27,14 @@ module "secure" {
   private_subnets = aws_subnet.private[*].id
   vpc_cidr        = aws_vpc.main_vpc.cidr_block
 }
+
+module "insecure" {
+  source = "./modules/insecure_infra"
+
+  project_name   = var.project_name
+  environment    = var.env
+  vpc_id         = aws_vpc.main_vpc.id
+  public_subnets = aws_subnet.public[*].id
+  private_subnets = aws_subnet.private[*].id
+  vpc_cidr       = aws_vpc.main_vpc.cidr_block
+}
