@@ -38,13 +38,6 @@ resource "aws_security_group" "lambda_sg" {
   description = "Security group for the insecure Lambda function"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -56,6 +49,12 @@ resource "aws_security_group" "lambda_sg" {
     Name        = "${var.project_name}-insecure-lambda-sg"
     Environment = var.environment
   }
+}
+
+resource aws_vpc_security_group_ingress_rule "insecure_lambda_ingress_rule" {
+  ip_protocol       = "tcp"
+  security_group_id = aws_security_group.lambda_sg.id
+  cidr_ipv4  = "0.0.0.0/0"
 }
 
 # 5. Lambda Function
